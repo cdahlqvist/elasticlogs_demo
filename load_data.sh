@@ -11,10 +11,12 @@ then
 	exit
 fi
 
-# Create file containing entity centric data to index
-echo $(date) " Start creating entity centric data file"
-cat ./data/logs | $LOGSTASH_PATH -f ./elasticlogs_entity_generation.conf | ./aggregate_entities.py > ./data/entities
-echo $(date) " Completed creating entity centric data file"
+file="./data/entities"
+if [ ! -s "$file" ]
+then
+	echo "ERROR: $file does not exist or does not contain any data."
+	exit
+fi
 
 # Ensure the correct index template is loaded
 curl -XPOST http://$ESHOST/_template/elasticlogs -d @elasticlogs_template.json
