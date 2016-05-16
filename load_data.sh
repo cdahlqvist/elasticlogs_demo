@@ -1,6 +1,5 @@
 #/bin/bash
 
-ESHOST="127.0.0.1:9200"
 LOGSTASH_PATH="../logstash-2.3.2/bin/logstash"
 
 # First ensure there is a file named 'logs' in the data directory that is larger than 0 bytes
@@ -19,7 +18,7 @@ then
 fi
 
 # Ensure the correct index template is loaded
-curl -XPOST http://$ESHOST/_template/elasticlogs -d @elasticlogs_template.json
+curl -XPOST https://$ESHOST/_template/elasticlogs -d @elasticlogs_template.json -u $ES_USER:$ES_PASSWORD
 
 # Load both raw and entity centril data into Elasticsearch
 echo $(date) " Start loading entity centric data file"
