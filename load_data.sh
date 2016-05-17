@@ -28,3 +28,7 @@ echo $(date) " Completed loading entity centric data file"
 echo $(date) " Start loading raw data file"
 cat ./data/logs | $LOGSTASH_PATH -f ./elasticlogs_raw.conf > ./data/errors
 echo $(date) " Completed loading raw data file"
+
+curl -XPOST 'https://$ESHOST/elasticlogs*/_forcemerge' -u $ES_USER:$ES_PASSWORD -d '{
+  "max_num_segments":1
+}'
